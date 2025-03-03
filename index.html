@@ -1,15 +1,16 @@
 <script>
     async function obtenerDatosUsuario() {
-      // Obtener el ID desde la URL
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
   
       if (!id) {
-        document.getElementById("contenido").innerHTML = "Error: No se proporcionó un ID.";
+        document.getElementById("contenido").innerHTML = "<p style='color:red;'>❌ Error: No se proporcionó un ID.</p>";
         return;
       }
   
-      const apiUrl = "https://script.googleusercontent.com/macros/echo?user_content_key=l9RKDGe6w91OdPbOKhGlN9E9cO2-yIq78QHdZWErP0bokTjbwhHmNrjrl2gLd8DiWSpdED6Rj593Oy8uR-5BhbSQh_r5iLBom5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnFaLeKGsRlSEDno6vMfx9KkImvmJiE_F1UvfMgUFmbruKklmwIL32CVVGKypUfUSdPG_EcfWZD_EC5FOKreVs2gwTbHZzfNQvlPwRcE3lHGA&lib=MixoHs13cB6Hy9sqqvFXh51E_Ey5cuaOY&id=" + id;
+      const apiUrl = `https://script.googleusercontent.com/macros/echo?user_content_key=l9RKDGe6w91OdPbOKhGlN9E9cO2-yIq78QHdZWErP0bokTjbwhHmNrjrl2gLd8DiWSpdED6Rj593Oy8uR-5BhbSQh_r5iLBom5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnFaLeKGsRlSEDno6vMfx9KkImvmJiE_F1UvfMgUFmbruKklmwIL32CVVGKypUfUSdPG_EcfWZD_EC5FOKreVs2gwTbHZzfNQvlPwRcE3lHGA&lib=MixoHs13cB6Hy9sqqvFXh51E_Ey5cuaOY&id=${id}`;
+  
+      document.getElementById("contenido").innerHTML = `<p>🔗 <strong>URL Generada:</strong> <a href="${apiUrl}" target="_blank">${apiUrl}</a></p>`;
   
       try {
         const response = await fetch(apiUrl);
@@ -18,9 +19,8 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
   
-        // Mostrar datos en la web
-        document.getElementById("contenido").innerHTML = `
-          <h2>Información del Usuario</h2>
+        document.getElementById("contenido").innerHTML += `
+          <h2>✅ Información del Usuario</h2>
           <p><strong>ID:</strong> ${data.id}</p>
           <p><strong>Nombre:</strong> ${data.nombre} ${data.apellido}</p>
           <p><strong>Celular:</strong> ${data.celular}</p>
@@ -28,7 +28,7 @@
           <p><strong>Correo:</strong> ${data.correo}</p>
         `;
       } catch (error) {
-        document.getElementById("contenido").innerHTML = "Error al obtener datos: " + error.message;
+        document.getElementById("contenido").innerHTML += `<p style='color:red;'>❌ Error al obtener datos: ${error.message}</p>`;
       }
     }
   
