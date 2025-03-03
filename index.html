@@ -37,7 +37,7 @@ const userId = urlParams.get('id');
 
 // Hacer una solicitud a la API para obtener los datos del usuario
 if (userId) {
-  fetch(`https://script.google.com/macros/s/AKfycbx015krHht0Y08iBXrJYv2UBQhCd4CZVrBEVMewfqamhHy_NIX79_EUPvssiHrdpOzm/exec?id=${userId}`)
+  fetch(`https://script.google.com/macros/s/AKfycbwuY7fkG6ab5eTFGKZfWgwLdwNjb6jxh53Tx53dnab1JGfxx8eo_wgkdycbbc6Ew_AI/exec?id=${userId}`)
     .then(response => response.json())
     .then(data => {
       if (data.error) {
