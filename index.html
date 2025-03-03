@@ -1,56 +1,42 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario</title>
-</head>
-<body>
-
-    <h2>Perfil de Usuario</h2>
-    <div id="user-data">
-        <p><strong>ID:</strong> <span id="id"></span></p>
-        <p><strong>Nombre:</strong> <span id="nombre"></span></p>
-        <p><strong>Apellido:</strong> <span id="apellido"></span></p>
-        <p><strong>Celular:</strong> <span id="celular"></span></p>
-        <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-        <p><strong>Correo:</strong> <span id="correo"></span></p>
-    </div>
-
-    <script>
-        // Obtener el ID desde la URL
-        function getQueryParam(param) {
-            let params = new URLSearchParams(window.location.search);
-            return params.get(param);
-        }
-
-        let userId = getQueryParam("id");
-
-        if (userId) {
-            fetch(`https://script.google.com/macros/s/AKfycbxJnodDwYyMtR0kQg-A8hgF-DUxbEaCtaGeBkrNJM5TF10tsDvqBfuSYCfP0YYS3eBC/exec?id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById("user-data").innerHTML = "<p>Usuario no encontrado.</p>";
-                    } else {
-                        document.getElementById("id").textContent = data.id;
-                        document.getElementById("nombre").textContent = data.nombre;
-                        document.getElementById("apellido").textContent = data.apellido;
-                        document.getElementById("celular").textContent = data.celular;
-                        document.getElementById("direccion").textContent = data.direccion;
-                        document.getElementById("correo").textContent = data.correo;
-                    }
-                })
-                .catch(error => {
-                    document.getElementById("user-data").innerHTML = "<p>Error al obtener los datos.</p>";
-                });
-        } else {
-            document.getElementById("user-data").innerHTML = "<p>No se proporcionó un ID válido.</p>";
-        }
-    </script>
-
-</body>
-</html>
+<script>
+    async function obtenerDatosUsuario() {
+      // Obtener el ID desde la URL
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+  
+      if (!id) {
+        document.getElementById("contenido").innerHTML = "Error: No se proporcionó un ID.";
+        return;
+      }
+  
+      const apiUrl = "https://script.googleusercontent.com/macros/echo?user_content_key=l9RKDGe6w91OdPbOKhGlN9E9cO2-yIq78QHdZWErP0bokTjbwhHmNrjrl2gLd8DiWSpdED6Rj593Oy8uR-5BhbSQh_r5iLBom5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnFaLeKGsRlSEDno6vMfx9KkImvmJiE_F1UvfMgUFmbruKklmwIL32CVVGKypUfUSdPG_EcfWZD_EC5FOKreVs2gwTbHZzfNQvlPwRcE3lHGA&lib=MixoHs13cB6Hy9sqqvFXh51E_Ey5cuaOY&id=" + id;
+  
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Error al obtener datos");
+  
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+  
+        // Mostrar datos en la web
+        document.getElementById("contenido").innerHTML = `
+          <h2>Información del Usuario</h2>
+          <p><strong>ID:</strong> ${data.id}</p>
+          <p><strong>Nombre:</strong> ${data.nombre} ${data.apellido}</p>
+          <p><strong>Celular:</strong> ${data.celular}</p>
+          <p><strong>Dirección:</strong> ${data.direccion}</p>
+          <p><strong>Correo:</strong> ${data.correo}</p>
+        `;
+      } catch (error) {
+        document.getElementById("contenido").innerHTML = "Error al obtener datos: " + error.message;
+      }
+    }
+  
+    window.onload = obtenerDatosUsuario;
+  </script>
+  
+  <div id="contenido">Cargando...</div>
+  
 
 
   
