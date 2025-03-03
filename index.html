@@ -1,58 +1,42 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfil de Usuario</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+<script>
+    // 1️⃣ Obtener el ID desde la URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
     }
-    .profile {
-      border: 1px solid #ccc;
-      padding: 20px;
-      max-width: 300px;
-      margin: 0 auto;
-      text-align: left;
-    }
-  </style>
-</head>
-<body>
-  <div class="profile">
-    <h1>Perfil de Usuario</h1>
-    <p><strong>ID:</strong> <span id="id"></span></p>
-    <p><strong>Nombre:</strong> <span id="nombre"></span></p>
-    <p><strong>Apellido:</strong> <span id="apellido"></span></p>
-    <p><strong>Celular:</strong> <span id="celular"></span></p>
-    <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-    <p><strong>Correo:</strong> <span id="correo"></span></p>
-  </div>
-
-  <script>
-    /// Obtener el ID del usuario desde la URL
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
-
-// Hacer una solicitud a la API para obtener los datos del usuario
-if (userId) {
-  fetch(`=IMAGE("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://brian102586.github.io/perfil-usuarios/?id=" & A2)?id=${userId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        alert(data.error); // Mostrar un mensaje de error si el usuario no existe
-      } else {
-        // Mostrar los datos del usuario en la página
-        document.getElementById('id').textContent = data.id;
-        document.getElementById('nombre').textContent = data.nombre;
-        document.getElementById('apellido').textContent = data.apellido;
-        document.getElementById('celular').textContent = data.celular;
-        document.getElementById('direccion').textContent = data.direccion;
-        document.getElementById('correo').textContent = data.correo;
+  
+    // 2️⃣ Llamar a la API de Google Apps Script
+    async function fetchUserData() {
+      const id = getQueryParam("id");
+      if (!id) {
+        document.body.innerHTML = "<h3>Error: No se proporcionó un ID</h3>";
+        return;
       }
-    })
-    .catch(error => console.error('Error:', error));
-} else {
-  alert("No se proporcionó un ID de usuario.");
-}
+  
+      const apiUrl = `https://script.google.com/macros/s/TU-URL-DE-APPS-SCRIPT/exec?id=${id}`;
+  
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+  
+        // 3️⃣ Mostrar los datos en la página
+        if (data.error) {
+          document.body.innerHTML = `<h3>${data.error}</h3>`;
+        } else {
+          document.body.innerHTML = `
+            <h2>Información del Usuario</h2>
+            <p><strong>ID:</strong> ${data.ID}</p>
+            <p><strong>Nombre:</strong> ${data.Nombre} ${data.Apellido}</p>
+            <p><strong>Celular:</strong> ${data.Celular}</p>
+            <p><strong>Dirección:</strong> ${data.Dirección}</p>
+            <p><strong>Correo:</strong> ${data.Correo}</p>
+          `;
+        }
+      } catch (error) {
+        document.body.innerHTML = "<h3>Error al obtener los datos</h3>";
+      }
+    }
+  
+    fetchUserData();
+  </script>
+  
