@@ -31,31 +31,28 @@
   </div>
 
   <script>
-    // Obtener el ID del usuario desde la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
+    /// Obtener el ID del usuario desde la URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id');
 
-    // Hacer una solicitud a la API para obtener los datos del usuario
-    if (userId) {
-      fetch(`https://script.google.com/macros/s/AKfycbx015krHht0Y08iBXrJYv2UBQhCd4CZVrBEVMewfqamhHy_NIX79_EUPvssiHrdpOzm/exec?id=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            alert(data.error); // Mostrar un mensaje de error si el usuario no existe
-          } else {
-            // Mostrar los datos del usuario en la página
-            document.getElementById('id').textContent = data.id;
-            document.getElementById('nombre').textContent = data.nombre;
-            document.getElementById('apellido').textContent = data.apellido;
-            document.getElementById('celular').textContent = data.celular;
-            document.getElementById('direccion').textContent = data.direccion;
-            document.getElementById('correo').textContent = data.correo;
-          }
-        })
-        .catch(error => console.error('Error:', error));
-    } else {
-      alert("No se proporcionó un ID de usuario.");
-    }
-  </script>
-</body>
-</html>
+// Hacer una solicitud a la API para obtener los datos del usuario
+if (userId) {
+  fetch(`https://script.google.com/macros/s/AKfycbx015krHht0Y08iBXrJYv2UBQhCd4CZVrBEVMewfqamhHy_NIX79_EUPvssiHrdpOzm/exec?id=${userId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        alert(data.error); // Mostrar un mensaje de error si el usuario no existe
+      } else {
+        // Mostrar los datos del usuario en la página
+        document.getElementById('id').textContent = data.id;
+        document.getElementById('nombre').textContent = data.nombre;
+        document.getElementById('apellido').textContent = data.apellido;
+        document.getElementById('celular').textContent = data.celular;
+        document.getElementById('direccion').textContent = data.direccion;
+        document.getElementById('correo').textContent = data.correo;
+      }
+    })
+    .catch(error => console.error('Error:', error));
+} else {
+  alert("No se proporcionó un ID de usuario.");
+}
